@@ -1,3 +1,5 @@
+<snippet>
+  <content><![CDATA[
 # PianoBlog
 
 ## The Project:
@@ -19,3 +21,6 @@ Java Email tutorial: http://www.tutorialspoint.com/javamail_api/javamail_api_sen
 Timidity++: http://timidity.sourceforge.net/
 
 Lame: http://lame.sourceforge.net/
+]]></content>
+  <tabTrigger>readme</tabTrigger>
+</snippet>
