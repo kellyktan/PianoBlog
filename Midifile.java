@@ -17,8 +17,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import org.apache.http.HttpResponse;
 
-public class Midifile
-{
+public class Midifile {
     public static enum Note {
         C4(60),
         D4(62),
