@@ -1,19 +1,8 @@
-/**
- * midifile.java
- *
- * A very short program which builds and writes
- * a one-note Midi file.
- *
- * author  Karl Brown
- * last updated 2/24/2003
- */
-
-
 import com.soundcloud.api.*;
 import java.io.*;
 import java.text.*;
 import java.util.*;
-import javax.sound.midi.*; // package for all midi classes
+import javax.sound.midi.*;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -28,8 +17,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import org.apache.http.HttpResponse;
 
-public class Midifile {
-
+public class Midifile
+{
     public static enum Note {
         C4(60),
         D4(62),
@@ -72,46 +61,46 @@ public class Midifile {
         {
             double ticksPerMillis = 0.005;
 
-    //****  Create a new MIDI sequence with 25 ticks per beat  ****
+        //****  Create a new MIDI sequence with 25 ticks per beat  ****
             Sequence s = new Sequence(javax.sound.midi.Sequence.PPQ,25);
 
-    //****  Obtain a MIDI track from the sequence  ****
+        //****  Obtain a MIDI track from the sequence  ****
             Track t = s.createTrack();
 
-    //****  General MIDI sysex -- turn on General MIDI sound set  ****
+        //****  General MIDI sysex -- turn on General MIDI sound set  ****
             byte[] b = {(byte)0xF0, 0x7E, 0x7F, 0x09, 0x01, (byte)0xF7};
             SysexMessage sm = new SysexMessage();
             sm.setMessage(b, 6);
             MidiEvent me = new MidiEvent(sm,(long)0);
             t.add(me);
 
-    //****  set tempo (meta event)  ****
+        //****  set tempo (meta event)  ****
             MetaMessage mt = new MetaMessage();
             byte[] bt = {0x50, (byte)0x00, 0x00};
             mt.setMessage(0x51 ,bt, 3);
             me = new MidiEvent(mt,(long)0);
             t.add(me);
 
-    //****  set track name (meta event)  ****
+        //****  set track name (meta event)  ****
             mt = new MetaMessage();
             String TrackName = new String("midifile track");
             mt.setMessage(0x03 ,TrackName.getBytes(), TrackName.length());
             me = new MidiEvent(mt,(long)0);
             t.add(me);
 
-    //****  set omni on  ****
+        //****  set omni on  ****
             ShortMessage mm = new ShortMessage();
             mm.setMessage(ShortMessage.CONTROL_CHANGE, 0x7D,0x00);
             me = new MidiEvent(mm,(long)0);
             t.add(me);
 
-    //****  set poly on  ****
+        //****  set poly on  ****
             mm = new ShortMessage();
             mm.setMessage(ShortMessage.CONTROL_CHANGE, 0x7F,0x00);
             me = new MidiEvent(mm,(long)0);
             t.add(me);
 
-    //****  set instrument to Piano  ****
+        //****  set instrument to Piano  ****
             mm = new ShortMessage();
             mm.setMessage(ShortMessage.PROGRAM_CHANGE, 56, 0x00);
             me = new MidiEvent(mm,(long)0);
@@ -149,14 +138,14 @@ public class Midifile {
                 }
             }
 
-    //****  set end of track (meta event)  ****
+        //****  set end of track (meta event)  ****
             mt = new MetaMessage();
             byte[] bet = {}; // empty array
             mt.setMessage(0x2F,bet,0);
             me = new MidiEvent(mt, tick);
             t.add(me);
 
-    //****  write the MIDI sequence to a MIDI file  ****
+        //****  write the MIDI sequence to a MIDI file  ****
             File f = new File(filename + ".mid");
             MidiSystem.write(s,1,f);
         } //try
@@ -263,4 +252,4 @@ public class Midifile {
             e.printStackTrace();
         }
    }
-} //midifile
+}
