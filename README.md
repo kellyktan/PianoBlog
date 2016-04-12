@@ -8,6 +8,8 @@ The recording is done by first keeping track of a short sequence of notes on the
 
 Devpost Submission:  http://devpost.com/software/piano-blog
 
+Video Demo: https://www.youtube.com/watch?v=wivd3hVhdSI
+
 ## References:
 
 Java MIDI tutorial:  http://www.automatic-pilot.com/midifile.html
