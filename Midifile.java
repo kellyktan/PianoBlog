@@ -41,14 +41,14 @@ public class Midifile {
 
         public static Note getNoteForString(String s) {
             switch(s) {
-                case "C4": return C4;
-                case "D4": return D4;
-                case "E4": return E4;
-                case "F4": return F4;
-                case "G4": return G4;
-                case "A4": return A4;
-                case "B4": return B4;
-                case "C5": return C5;
+                case "c": return C4;
+                case "D": return D4;
+                case "E": return E4;
+                case "F": return F4;
+                case "G": return G4;
+                case "A": return A4;
+                case "B": return B4;
+                case "C": return C5;
                 default: return OFF;
             }
         }
@@ -173,7 +173,8 @@ public class Midifile {
             wrapper.login("username", "password");
             File audioFile = new File(filename + ".mp3");
             audioFile.setReadable(true, false);
-            SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMMM dd,yyyy hh:mm a");
+            sdf.setTimeZone(TimeZone.getTimeZone("America/New_York"));
             Date resultdate = new Date(Long.parseLong(filename));
             HttpResponse resp = wrapper.post(Request.to(Endpoints.TRACKS)
                     .add(Params.Track.TITLE, sdf.format(resultdate))

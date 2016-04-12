@@ -29,8 +29,9 @@ byte mac[] = {
   0x90, 0xA2, 0xDA, 0x0F, 0xBE, 0xF3
 };
 
-char pianoBlogServer[] = "<insert EC2 instance DNS here>";
+char pianoBlogServer[] = "<insert ec2 dns here>";
 
+boolean canRecord;
 int rec = 0;
 int prevRec = 0;
 int recState = 0;
@@ -60,10 +61,12 @@ void setup() {
     tone(SPEAKER, NOTE_C4);
     delay(400);
     noTone(SPEAKER);
+    canRecord = false;
   } else {
     tone(SPEAKER, NOTE_C5);
     delay(400);
     noTone(SPEAKER);
+    canRecord = true;
   }
 }
 
@@ -100,7 +103,7 @@ void loop() {
 
   // recored note
   rec = digitalRead(BUTTON_REC);
-  if (rec == HIGH && prevRec == LOW) {
+  if (canRecord && rec == HIGH && prevRec == LOW) {
       recState = 1 - recState;
       if (recState == 1) {
         prevNote = note;
@@ -118,7 +121,7 @@ void loop() {
     delay(10);
   }
   
-  if (recState == 1) {
+  if (canRecord && recState == 1) {
     digitalWrite(LED, HIGH);
     if (prevNote != note) {
       // note was changed
@@ -140,21 +143,21 @@ void loop() {
 
 String getStringForNote(int note) {
   if (note == NOTE_C4) {
-    return "C4";
+    return "c";
   } else if (note == NOTE_D4) {
-    return "D4";
+    return "D";
   } else if (note == NOTE_E4) {
-    return "E4";
+    return "E";
   } else if (note == NOTE_F4) {
-    return "F4";
+    return "F";
   } else if (note == NOTE_G4) {
-    return "G4";
+    return "G";
   } else if (note == NOTE_A4) {
-    return "A4";
+    return "A";
   } else if (note == NOTE_B4) {
-    return "B4";
+    return "B";
   } else if (note == NOTE_C5) {
-    return "C5";
+    return "C";
   } else {
     return "X";
   }
@@ -164,7 +167,7 @@ void sendToPianoBlog(String recording) {
   tone(SPEAKER, NOTE_C5);
   delay(100);
   noTone(SPEAKER);
-  if (client.connect(pianoBlogServer, 80)) {
+  if (client.connect(pianoBlogServer, 8080)) {
     client.print("POST / HTTP/1.1\n");
     client.print("Host: ");
     client.print(pianoBlogServer);
