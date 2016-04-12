@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<project name="HW2" default="build" basedir=".">
+    <property name="shared.root" location="${basedir}"/>
+    <property name="file.separator" location="/"/>
+    <property name="project.root" location="${basedir}"/>
+    <property name="build.dir" location="${project.root}"/>
+    <property name="build.target.dir" location="${project.root}${file.separator}target"/>
+    <property name="web-inf.dir" location="${build.target.dir}${file.separator}WEB-INF"/>
+    <property name="classes.dir"     location="${web-inf.dir}${file.separator}classes"/>
+    <property name="web-inf.lib.dir" location="${web-inf.dir}${file.separator}lib"/>
+    <property name="inputlib.dir"  location="${shared.root}${file.separator}lib"/>
+    <property name="conf.dir"      location="${build.dir}${file.separator}conf"/>
+
+    <target name="compile-servlet" description="Compiles the servlet">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="." destdir="${classes.dir}" debug="on" deprecation="off" optimize="on" includeAntRuntime="no">
+            <classpath>
+                <fileset dir="${inputlib.dir}">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="clean" description="Deletes all the compiled files">
+        <delete dir="${build.target.dir}"/>
+        <delete file="servlet.war"/>
+    </target>
+
+    <target name="servlet-war" depends="compile-servlet" description="Makes the WAR file for the servlet">
+        <delete file="servlet.war"/>
+        <copy file="${conf.dir}${file.separator}web.xml" tofile="${web-inf.dir}${file.separator}web.xml" overwrite="true" />
+        <copy todir="${web-inf.lib.dir}" overwrite="true">
+            <fileset dir="${inputlib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        <jar destfile="servlet.war" update="true">
+            <fileset dir="target">
+                <include name="**/*.class"/>
+                <include name="**/*.jar"/>
+                <include name="WEB-INF/web.xml"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="build" depends="servlet-war">
+    </target>
+
+</project>
